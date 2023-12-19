@@ -1,0 +1,151 @@
+
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Class Admission Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #header {
+            text-align: center;
+            padding: 50px;
+            color: rgb(11, 1, 1); /* Text color on top of the background image */
+        }
+
+        #admissionForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1,h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Yoga Class Admission Form</h1>
+        <img src="https://source.unsplash.com/1250x500/?yoga,yoga" height="200" width="400">
+        <h2>Join us for a healthy and rejuvenating experience</h2>
+    </div>
+    
+    <form id="admissionForm" action="payment.html" method="get">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required placeholder="Enter Full name">
+            
+            <label for="age">Age:</label>
+            <input type="number" id="age" required placeholder="Enter your age (12-65)">
+            
+            <label for="batch">Preferred Batch:</label>
+            <select id="batch" required>
+                <option value="6-7AM">6-7AM</option>
+                <option value="7-8AM">7-8AM</option>
+                <option value="8-9AM">8-9AM</option>
+                <option value="5-6PM">5-6PM</option>
+            </select>
+            <button type="submit" >Proceed to Pay</button>
+            
+    </form>
+
+    <script>
+        async function validateAndSubmit() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const batch = document.getElementById('batch').value;
+
+            if (!name.trim() || !age || !batch) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Age validation
+            if (isNaN(age) || age < 18 || age > 65) {
+                alert('Invalid age. Must be between 18 and 65.');
+                return;
+            }
+
+            const data = {
+                name: name,
+                age: age,
+                batch: batch,
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/enroll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                console.log(result);
+
+                // Check the payment status and show appropriate message
+                if (result.payment_response && result.payment_response.status === 'success') {
+                    alert(`Payment succeeded! Transaction ID: ${result.payment_response.transactionId}`);
+                } else {
+                    alert('Enrollment successful! Payment failed.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        }
+    </script>
+</body>
+</html>
