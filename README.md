@@ -1,4 +1,18 @@
 # yoga_registration
+Structure of the Directory
+yoga-admission-system/
+|-- public/
+|   |-- styles.css         # CSS styles for HTML pages
+|   |-- images/            # Directory for images
+|       |-- yoga.jpg       # Sample image
+|       |-- payment.jpg    # Sample payment image
+|-- index.html             # Main admission form
+|-- payment.html           # Payment page
+|-- app.js                 # Node.js server handling enrollment and payment
+|-- package.json           # Node.js package configuration
+|-- README.md              # ReadMe file
+|-- LICENSE                # License file (e.g., MIT License)
+
 Introduction
 This project is a simple Yoga Class Admission System that allows users to fill out an admission form and proceed to payment. The system is implemented using HTML for the user interface, JavaScript for client-side scripting, and a Node.js server with Express for handling enrollment and payment processes.
 
